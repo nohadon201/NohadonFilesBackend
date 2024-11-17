@@ -1,9 +1,14 @@
 package com.nohadon.NohadonFiles.Web.controllers
 
 
+import com.nohadon.NohadonFiles.Core.model.DTO.GitObjectDTO
 import com.nohadon.NohadonFiles.Core.model.DTO.ProjectDTO
+import com.nohadon.NohadonFiles.Core.model.GitDirectory
 import com.nohadon.NohadonFiles.Core.model.Project
+import com.nohadon.NohadonFiles.Core.services.GithubService
 import com.nohadon.NohadonFiles.Core.services.ProjectService
+import com.nohadon.NohadonFiles.Exceptions.NullReturnException
+import jakarta.websocket.server.PathParam
 import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,7 +25,8 @@ import org.springframework.web.servlet.function.EntityResponse
 @RestController
 @RequestMapping("/projects")
 class ProjectsController constructor(
-    private val projectService : ProjectService
+    private val projectService : ProjectService,
+    private val githubService: GithubService
 ) {
     @PostMapping("/createProject")
     fun create(@RequestBody @Validated projectDTO : ProjectDTO) : ResponseEntity<String> {
@@ -29,7 +35,8 @@ class ProjectsController constructor(
             projectDTO.getLanguages(),
             projectDTO.getInProgress(),
             projectDTO.getIcon(),
-            projectDTO.getColor()
+            projectDTO.getColor(),
+            projectDTO.getGithub()
         );
 
         projectService.createProject(p)
@@ -43,4 +50,28 @@ class ProjectsController constructor(
         projectService.getAll(list);
         return ResponseEntity.status(HttpStatus.OK).header("Access-Control-Allow-Origin", "*").body(list);
     }
+    @GetMapping("/getProjectContent{projectName}")
+    fun getProject(@PathParam("projectName") projectName : String) : ResponseEntity<GitDirectory> {
+        return try {
+            val projectDirectory : GitDirectory = githubService.getDirectory(projectName, "/")
+            ResponseEntity.status(HttpStatus.OK).body(projectDirectory);
+        } catch (e: NullReturnException) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+        } catch (e : Exception) {
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
+    }
+
+    @GetMapping("/getFile{projectName}{filePath}")
+    fun getProject(@PathParam("projectName") projectName : String, @PathParam("filePath") filePath : String) : ResponseEntity<String> {
+        return try {
+            val fileContent : String = githubService.getFile(projectName, filePath)
+            ResponseEntity.status(HttpStatus.OK).body(fileContent);
+        } catch (e: NullReturnException) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There's a problem with the connection from the backend to the Github Api. Please try later.")
+        } catch (e : Exception) {
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
+        }
+    }
+
 }

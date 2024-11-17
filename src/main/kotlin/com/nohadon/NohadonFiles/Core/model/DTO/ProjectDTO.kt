@@ -14,7 +14,9 @@ class ProjectDTO constructor(
     @NotNull
     private val icon: String = "",
     @NotNull
-    private val color: String = "purple"
+    private val color: String = "purple",
+    @NotNull
+    private val githubUrl: String = ""
 ) {
     fun getId() : Long = this.id
     fun getTitle() : String = this.title
@@ -22,5 +24,6 @@ class ProjectDTO constructor(
     fun getInProgress() : Boolean = this.inProgress
     fun getIcon() : String = this.icon
     fun getColor() : String = this.color
+    fun getGithub() : String = this.githubUrl
 
 }

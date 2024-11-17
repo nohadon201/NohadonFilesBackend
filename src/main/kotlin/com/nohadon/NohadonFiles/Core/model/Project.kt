@@ -21,6 +21,9 @@ class Project (
     @Column(name = "color", nullable = false)
     var color: String = "purple",
 
+    @Column(name="github", nullable = false)
+    var githubUrl:String = "",
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)

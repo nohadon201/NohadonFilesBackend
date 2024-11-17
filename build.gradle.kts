@@ -22,7 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	//implementation("org.springframework.boot:")
+	implementation("org.kohsuke:github-api:1.326")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
