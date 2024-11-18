@@ -48,17 +48,17 @@ class ProjectsController constructor(
     fun getAll() : ResponseEntity<List<Project>> {
         val list : MutableList<Project> = mutableListOf()
         projectService.getAll(list);
-        return ResponseEntity.status(HttpStatus.OK).header("Access-Control-Allow-Origin", "*").body(list);
+        return ResponseEntity.status(HttpStatus.OK).header(CORS_HEADER, CORS_HEADER_VALUE).body(list);
     }
-    @GetMapping("/getProjectContent{projectName}")
+    @GetMapping("{projectName}")
     fun getProject(@PathParam("projectName") projectName : String) : ResponseEntity<GitDirectory> {
         return try {
             val projectDirectory : GitDirectory = githubService.getDirectory(projectName, "/")
-            ResponseEntity.status(HttpStatus.OK).body(projectDirectory);
+            ResponseEntity.status(HttpStatus.OK).header(CORS_HEADER, CORS_HEADER_VALUE).body(projectDirectory);
         } catch (e: NullReturnException) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header(CORS_HEADER, CORS_HEADER_VALUE).build()
         } catch (e : Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
+            ResponseEntity.status(HttpStatus.CONFLICT).header(CORS_HEADER, CORS_HEADER_VALUE).build()
         }
     }
 
@@ -66,12 +66,17 @@ class ProjectsController constructor(
     fun getProject(@PathParam("projectName") projectName : String, @PathParam("filePath") filePath : String) : ResponseEntity<String> {
         return try {
             val fileContent : String = githubService.getFile(projectName, filePath)
-            ResponseEntity.status(HttpStatus.OK).body(fileContent);
+            ResponseEntity.status(HttpStatus.OK).header(CORS_HEADER, CORS_HEADER_VALUE).body(fileContent);
         } catch (e: NullReturnException) {
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There's a problem with the connection from the backend to the Github Api. Please try later.")
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header(CORS_HEADER, CORS_HEADER_VALUE).body("There's a problem with the connection from the backend to the Github Api. Please try later.")
         } catch (e : Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
+            ResponseEntity.status(HttpStatus.CONFLICT).header(CORS_HEADER, CORS_HEADER_VALUE).build()
         }
+    }
+
+    companion object {
+        const val CORS_HEADER : String = "Access-Control-Allow-Origin"
+        const val CORS_HEADER_VALUE : String = "*"
     }
 
 }
