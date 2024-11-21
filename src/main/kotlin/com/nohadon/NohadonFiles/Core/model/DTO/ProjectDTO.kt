@@ -1,6 +1,5 @@
 package com.nohadon.NohadonFiles.Core.model.DTO
 
-import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
 
 class ProjectDTO constructor(
@@ -16,7 +15,9 @@ class ProjectDTO constructor(
     @NotNull
     private val color: String = "purple",
     @NotNull
-    private val githubUrl: String = ""
+    private val githubProjectName: String = "",
+    @NotNull
+    private val description : String = ""
 ) {
     fun getId() : Long = this.id
     fun getTitle() : String = this.title
@@ -24,6 +25,7 @@ class ProjectDTO constructor(
     fun getInProgress() : Boolean = this.inProgress
     fun getIcon() : String = this.icon
     fun getColor() : String = this.color
-    fun getGithub() : String = this.githubUrl
+    fun getGithub() : String = this.githubProjectName
+    fun getDescription() : String = this.description
 
 }

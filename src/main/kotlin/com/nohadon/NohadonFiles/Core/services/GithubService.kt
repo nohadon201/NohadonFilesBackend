@@ -3,9 +3,9 @@ package com.nohadon.NohadonFiles.Core.services
 import com.nohadon.NohadonFiles.Core.model.DTO.GitObjectDTO
 import com.nohadon.NohadonFiles.Core.model.GitDirectory
 import com.nohadon.NohadonFiles.Core.model.GitFile
-import com.nohadon.NohadonFiles.Exceptions.NullReturnException
+import com.nohadon.NohadonFiles.Exceptions.GitErrorResponseException
+import com.nohadon.NohadonFiles.Exceptions.NullBodyResponseException
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
@@ -25,10 +25,10 @@ class GithubService (
     fun getFile(projectName : String, path : String) : String {
         val result = githubClient.get().uri("$githubUrl/$projectName/contents$path").retrieve().onStatus(HttpStatusCode::isError){
                 _, response ->
-            throw NullReturnException("file", path)
+            throw GitErrorResponseException("file", path, response.statusText)
         }.onStatus(HttpStatusCode::is3xxRedirection){
                 _, response ->
-            println("body: ${response.body}")
+            println("REDIRECTION: ${response.body}")
         }.onStatus(HttpStatusCode::is2xxSuccessful){
             _, response->
 
@@ -42,14 +42,13 @@ class GithubService (
             .retrieve()
             .onStatus(HttpStatusCode::is3xxRedirection) {
                     _, response ->
-                val newUrl = response.headers["location"]?.get(0) ?: throw NullReturnException("a","a")
-                redirect(newUrl, list) // TODO: Sacar el valor de redirect de este foking contexto (302)
+                val newUrl = response.headers["location"]!![0]
+                redirect(newUrl, list)
             }.onStatus(HttpStatusCode::isError) {
                     _, response ->
-               System.out.println("añlsdkfjañsldkf")
+               throw GitErrorResponseException("directory", currentDirectory, response.statusText)
             }.body<MutableList<GitObjectDTO>>()
 
-        // TODO: Terminar el redirect
 
         result = result?: list;
 
@@ -75,12 +74,12 @@ class GithubService (
             .retrieve()
             .onStatus(HttpStatusCode::is3xxRedirection) {
                     _, response ->
-                val newUrl = response.headers["location"]?.get(0) ?: throw NullReturnException("a","a")
+                val newUrl = response.headers["location"]!![0]
                 redirect(newUrl, list)
             }.onStatus(HttpStatusCode::isError) {
                     _, response ->
-                throw NullReturnException("redirect", url)
-            }.body<MutableList<GitObjectDTO>>() ?: throw NullReturnException("directory", url);
+                throw GitErrorResponseException("redirect", url, response.statusText)
+            }.body<MutableList<GitObjectDTO>>() ?: throw NullBodyResponseException("directory", url);
         list.addAll(a)
     }
     companion object {

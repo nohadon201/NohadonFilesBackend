@@ -1,6 +1,5 @@
 package com.nohadon.NohadonFiles.Core.model
 
-import com.nohadon.NohadonFiles.Core.model.DTO.ProjectDTO
 import jakarta.persistence.*
 
 @Entity
@@ -22,7 +21,10 @@ class Project (
     var color: String = "purple",
 
     @Column(name="github", nullable = false)
-    var githubUrl:String = "",
+    var githubProjectName:String = "",
+
+    @Column(name="description", nullable = false)
+    var description:String = "",
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
