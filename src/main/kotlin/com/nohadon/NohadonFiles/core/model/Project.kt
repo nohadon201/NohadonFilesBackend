@@ -1,4 +1,4 @@
-package com.nohadon.NohadonFiles.Core.model
+package com.nohadon.NohadonFiles.core.model
 
 import jakarta.persistence.*
 

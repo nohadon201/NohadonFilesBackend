@@ -1,4 +1,4 @@
-package com.nohadon.NohadonFiles.Core.model.DTO
+package com.nohadon.NohadonFiles.core.model.DTO
 
 import org.jetbrains.annotations.NotNull
 import java.io.Serializable

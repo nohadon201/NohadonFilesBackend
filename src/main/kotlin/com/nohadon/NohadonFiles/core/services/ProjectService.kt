@@ -1,7 +1,7 @@
-package com.nohadon.NohadonFiles.Core.services
+package com.nohadon.NohadonFiles.core.services
 
-import com.nohadon.NohadonFiles.Core.model.Project
-import com.nohadon.NohadonFiles.Core.repository.ProjectRepository
+import com.nohadon.NohadonFiles.core.model.Project
+import com.nohadon.NohadonFiles.core.repository.ProjectRepository
 import org.springframework.stereotype.Service
 
 @Service

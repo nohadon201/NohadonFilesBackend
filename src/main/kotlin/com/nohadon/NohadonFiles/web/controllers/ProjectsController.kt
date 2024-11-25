@@ -1,12 +1,12 @@
-package com.nohadon.NohadonFiles.Web.controllers
+package com.nohadon.NohadonFiles.web.controllers
 
 
-import com.nohadon.NohadonFiles.Core.model.DTO.ProjectDTO
-import com.nohadon.NohadonFiles.Core.model.GitDirectory
-import com.nohadon.NohadonFiles.Core.model.Project
-import com.nohadon.NohadonFiles.Core.services.GithubService
-import com.nohadon.NohadonFiles.Core.services.ProjectService
-import com.nohadon.NohadonFiles.Exceptions.GitErrorResponseException
+import com.nohadon.NohadonFiles.core.model.DTO.ProjectDTO
+import com.nohadon.NohadonFiles.core.model.GitDirectory
+import com.nohadon.NohadonFiles.core.model.Project
+import com.nohadon.NohadonFiles.core.services.GithubService
+import com.nohadon.NohadonFiles.core.services.ProjectService
+import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
 import jakarta.websocket.server.PathParam
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

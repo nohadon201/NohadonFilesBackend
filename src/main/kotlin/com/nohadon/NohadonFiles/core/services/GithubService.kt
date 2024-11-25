@@ -1,10 +1,10 @@
-package com.nohadon.NohadonFiles.Core.services
+package com.nohadon.NohadonFiles.core.services
 
-import com.nohadon.NohadonFiles.Core.model.DTO.GitObjectDTO
-import com.nohadon.NohadonFiles.Core.model.GitDirectory
-import com.nohadon.NohadonFiles.Core.model.GitFile
-import com.nohadon.NohadonFiles.Exceptions.GitErrorResponseException
-import com.nohadon.NohadonFiles.Exceptions.NullBodyResponseException
+import com.nohadon.NohadonFiles.core.model.DTO.GitObjectDTO
+import com.nohadon.NohadonFiles.core.model.GitDirectory
+import com.nohadon.NohadonFiles.core.model.GitFile
+import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
+import com.nohadon.NohadonFiles.exceptions.NullBodyResponseException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
@@ -57,7 +57,6 @@ class GithubService (
 
         result.forEach {
             if (FILE_TYPE == it.getType()) {
-                //val content = getFile(projectName, currentDirectory + it.getName())
                 files.add(GitFile(it.getName(), currentDirectory+it.getName(), it.getSize().toLong()))
             } else if (DIR_TYPE == it.getType()) {
                 val subDirectory = getDirectory(projectName, "$currentDirectory${it.getName()}/")
