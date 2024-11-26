@@ -69,7 +69,7 @@ class ProjectsController constructor(
         } catch (e: GitErrorResponseException) {
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header(CORS_HEADER, CORS_HEADER_VALUE).body("There's a problem with the connection from the backend to the Github Api. Please try later.")
         } catch (e : Exception) {
-            ResponseEntity.status(HttpStatus.CONFLICT).header(CORS_HEADER, CORS_HEADER_VALUE).build()
+            ResponseEntity.status(HttpStatus.CONFLICT).header(CORS_HEADER, CORS_HEADER_VALUE).body(e.stackTraceToString())
         }
     }
 

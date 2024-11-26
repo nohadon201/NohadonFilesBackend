@@ -23,7 +23,7 @@ class Project (
     @Column(name="github", nullable = false)
     var githubProjectName:String = "",
 
-    @Column(name="description", nullable = false)
+    @Column(name="description", nullable = false, columnDefinition = "TEXT")
     var description:String = "",
 
     @Id
