@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
@@ -6,13 +8,14 @@ plugins {
 }
 
 group = "com.nohadon"
-version = "0.0.1-SNAPSHOT"
+version = "0."
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
+
 
 repositories {
 	mavenCentral()
@@ -22,6 +25,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("org.kohsuke:github-api:1.326")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -35,6 +39,10 @@ kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
+}
+
+tasks.named<BootBuildImage>("bootBuildImage") {
+	imageName.set("nohadon-files-boot:$version")
 }
 
 tasks.withType<Test> {

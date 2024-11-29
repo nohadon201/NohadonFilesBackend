@@ -25,13 +25,11 @@ class GithubService (
     fun getFile(projectName : String, path : String) : String {
         val result = githubClient.get().uri("$githubUrl/$projectName/contents$path").retrieve().onStatus(HttpStatusCode::isError){
                 _, response ->
+
             throw GitErrorResponseException("file", path, response.statusText)
         }.onStatus(HttpStatusCode::is3xxRedirection){
                 _, response ->
             println("REDIRECTION: ${response.body}")
-        }.onStatus(HttpStatusCode::is2xxSuccessful){
-            _, response->
-
         }.body<String>()
         return result?:""
     }
