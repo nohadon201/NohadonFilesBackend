@@ -1,4 +1,7 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 plugins {
 	kotlin("jvm") version "1.9.25"
@@ -7,8 +10,9 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
+version = "0.0.49.1"
 group = "com.nohadon"
-version = "0."
+
 
 java {
 	toolchain {
@@ -42,6 +46,9 @@ kotlin {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
+
+	val buildDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(Date())
+	createdDate.set(buildDate)
 	imageName.set("nohadon-files-boot:$version")
 }
 
