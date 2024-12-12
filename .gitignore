@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+env_keys
 
 
 ### STS ###
@@ -40,5 +40,3 @@ out/
 
 ### Kotlin ###
 .kotlin
-
-src/main/resources/

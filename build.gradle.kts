@@ -29,6 +29,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("org.kohsuke:github-api:1.326")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -46,7 +47,6 @@ kotlin {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
-
 	val buildDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(Date())
 	createdDate.set(buildDate)
 	imageName.set("nohadon-files-boot:$version")
