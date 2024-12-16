@@ -5,6 +5,8 @@ import com.nohadon.NohadonFiles.core.model.GitDirectory
 import com.nohadon.NohadonFiles.core.model.GitFile
 import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
 import com.nohadon.NohadonFiles.exceptions.NullBodyResponseException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
@@ -33,10 +35,10 @@ class GithubService (
         }.body<String>()
         return result?:""
     }
-    fun getDirectory(projectName: String, currentDirectory : String) : GitDirectory {
+    fun getDirectory(projectName: String, currentPath : String) : GitDirectory {
         val list : MutableList<GitObjectDTO> = mutableListOf();
         var result = githubClient.get()
-            .uri("$githubUrl/$projectName/contents$currentDirectory")
+            .uri("$githubUrl/$projectName/contents$currentPath")
             .retrieve()
             .onStatus(HttpStatusCode::is3xxRedirection) {
                     _, response ->
@@ -44,7 +46,7 @@ class GithubService (
                 redirect(newUrl, list)
             }.onStatus(HttpStatusCode::isError) {
                     _, response ->
-               throw GitErrorResponseException("directory", currentDirectory, response.statusText)
+               throw GitErrorResponseException("directory", currentPath, response.statusText)
             }.body<MutableList<GitObjectDTO>>()
 
 
@@ -55,14 +57,17 @@ class GithubService (
 
         result.forEach {
             if (FILE_TYPE == it.getType()) {
-                files.add(GitFile(it.getName(), currentDirectory+it.getName(), it.getSize().toLong()))
+                files.add(GitFile(it.getName(), currentPath+it.getName(), it.getSize().toLong()))
             } else if (DIR_TYPE == it.getType()) {
-                val subDirectory = getDirectory(projectName, "$currentDirectory${it.getName()}/")
+                val subDirectory = getDirectory(projectName, "$currentPath${it.getName()}/")
                 directories.add(subDirectory)
             }
         }
 
-        return GitDirectory(currentDirectory, directories, files)
+        var nameOfDirectory : String = if(currentPath.length>1) currentPath.substring(1,currentPath.length-1) else ""
+        if(nameOfDirectory.isNotEmpty()) nameOfDirectory = nameOfDirectory.split("/").last()
+
+        return GitDirectory(nameOfDirectory, currentPath, directories, files)
     }
 
     fun redirect(url : String, list : MutableList<GitObjectDTO>) {
@@ -80,6 +85,7 @@ class GithubService (
         list.addAll(a)
     }
     companion object {
+        val log: Logger = LoggerFactory.getLogger(GithubService::class.java)
         const val H_ACCEPT = "Accept"
         const val HV_ACCEPT = "application/vnd.github.raw+json"
         const val H_AUTHORIZATION = "Authorization"
