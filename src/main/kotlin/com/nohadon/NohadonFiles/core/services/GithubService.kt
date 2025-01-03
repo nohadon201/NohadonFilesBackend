@@ -17,6 +17,7 @@ import org.springframework.web.client.body
 class GithubService (
     @Value("\${GIT_TOKEN}") private val personalGitToken : String,
     @Value("\${GIT_URL}") private val githubUrl : String,
+    private val projectService: ProjectService
 ) {
     private var githubClient: RestClient = RestClient.builder()
         .baseUrl(githubUrl)
@@ -24,8 +25,12 @@ class GithubService (
         .defaultHeader(H_ACCEPT, HV_ACCEPT)
         .defaultHeader(H_GIT_API_VERSION, HV_GIT_API_VERSION)
         .build()
-    fun getFile(projectName : String, path : String) : String {
-        val result = githubClient.get().uri("$githubUrl/$projectName/contents$path").retrieve().onStatus(HttpStatusCode::isError){
+
+    fun getFile(id : Long, path : String) : String {
+        val project = projectService.get(id)
+        val result = githubClient.get().uri("$githubUrl/${project.githubProjectName}/contents${project.defaultPath}$path")
+            .retrieve()
+            .onStatus(HttpStatusCode::isError) {
                 _, response ->
 
             throw GitErrorResponseException("file", path, response.statusText)
@@ -35,10 +40,11 @@ class GithubService (
         }.body<String>()
         return result?:""
     }
-    fun getDirectory(projectName: String, currentPath : String) : GitDirectory {
+    fun getDirectory(id: Long, currentPath : String) : GitDirectory {
+        val project = projectService.get(id)
         val list : MutableList<GitObjectDTO> = mutableListOf();
         var result = githubClient.get()
-            .uri("$githubUrl/$projectName/contents$currentPath")
+            .uri("$githubUrl/${project.githubProjectName}/contents${project.defaultPath}$currentPath")
             .retrieve()
             .onStatus(HttpStatusCode::is3xxRedirection) {
                     _, response ->
@@ -59,7 +65,7 @@ class GithubService (
             if (FILE_TYPE == it.getType()) {
                 files.add(GitFile(it.getName(), currentPath+it.getName(), it.getSize().toLong()))
             } else if (DIR_TYPE == it.getType()) {
-                val subDirectory = getDirectory(projectName, "$currentPath${it.getName()}/")
+                val subDirectory = getDirectory(id, "$currentPath${it.getName()}/")
                 directories.add(subDirectory)
             }
         }
@@ -69,7 +75,6 @@ class GithubService (
 
         return GitDirectory(nameOfDirectory, currentPath, directories, files)
     }
-
     fun redirect(url : String, list : MutableList<GitObjectDTO>) {
         val a = githubClient.get()
             .uri(url)

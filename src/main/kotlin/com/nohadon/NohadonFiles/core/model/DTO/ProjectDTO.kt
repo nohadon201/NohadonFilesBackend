@@ -1,31 +1,25 @@
 package com.nohadon.NohadonFiles.core.model.DTO
 
-import org.jetbrains.annotations.NotNull
+import org.springframework.lang.NonNull
 
-class ProjectDTO constructor(
-    private val id: Long,
-    @NotNull
-    private val title: String = "",
-    @NotNull
-    private val languages: String = "",
-    @NotNull
-    private val inProgress: Boolean = true,
-    @NotNull
-    private val icon: String = "",
-    @NotNull
-    private val color: String = "purple",
-    @NotNull
-    private val githubProjectName: String = "",
-    @NotNull
-    private val description : String = ""
+class ProjectDTO (
+    @NonNull private val title: String = "",
+    @NonNull private val subTitle: String = "",
+    @NonNull private val languages: String = "",
+    @NonNull private val githubProjectName: String = "",
+    @NonNull private val description : String = "",
+    private val icon: String?,
+    private val inProgress: Boolean?,
+    private val color: String?,
+    private val defaultPath:String?
 ) {
-    fun getId() : Long = this.id
     fun getTitle() : String = this.title
+    fun getSubtitle() : String = this.subTitle
     fun getLanguages() : String = this.languages
-    fun getInProgress() : Boolean = this.inProgress
-    fun getIcon() : String = this.icon
-    fun getColor() : String = this.color
     fun getGithub() : String = this.githubProjectName
     fun getDescription() : String = this.description
-
+    fun getInProgress() : Boolean = this.inProgress?:true;
+    fun getIcon() : String = this.icon?:"\uF413";
+    fun getColor() : String = this.color?:"purple"
+    fun getDefaultPath() : String = this.defaultPath?:""
 }

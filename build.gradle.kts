@@ -1,4 +1,5 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.run.BootRun
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,7 +11,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
-version = "0.0.49.1"
+version = "0.1.1.0"
 group = "com.nohadon"
 
 

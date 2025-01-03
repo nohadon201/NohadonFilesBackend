@@ -24,6 +24,9 @@ class ProjectService constructor(
             throw InvalidIdException(id)
         }
     }
+    fun get(id : Long) : Project {
+        return projectRepository.getReferenceById(id);
+    }
     companion object {
         val log : Logger = LoggerFactory.getLogger(ProjectService::class.java)
     }

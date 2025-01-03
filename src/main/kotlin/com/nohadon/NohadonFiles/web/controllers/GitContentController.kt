@@ -20,9 +20,9 @@ class GitContentController (
 ) {
 
     @GetMapping("/get{projectName}")
-    fun getProject(@PathParam("projectName") projectName : String) : ResponseEntity<GitDirectory> {
+    fun getProject(@PathParam("id") id : Long) : ResponseEntity<GitDirectory> {
         return try {
-            val projectDirectory : GitDirectory = githubService.getDirectory(projectName, "/")
+            val projectDirectory : GitDirectory = githubService.getDirectory(id, "/")
             ResponseEntity.status(HttpStatus.OK)
                 .header(WebConstants.CORS_HEADER, WebConstants.CORS_HEADER_VALUE)
                 .body(projectDirectory);
@@ -39,10 +39,10 @@ class GitContentController (
         }
     }
 
-    @GetMapping("/readFile{projectName}{filePath}")
-    fun getFile(@PathParam("projectName") projectName : String, @PathParam("filePath") filePath : String) : ResponseEntity<String> {
+    @GetMapping("/readFile{id}{filePath}")
+    fun getFile(@PathParam("id") id : Long, @PathParam("filePath") filePath : String) : ResponseEntity<String> {
         return try {
-            val fileContent : String = githubService.getFile(projectName, filePath)
+            val fileContent : String = githubService.getFile(id, filePath)
             ResponseEntity.status(HttpStatus.OK)
                 .header(WebConstants.CORS_HEADER, WebConstants.CORS_HEADER_VALUE)
                 .header("responseType", "text")
