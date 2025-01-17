@@ -11,7 +11,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
-version = "0.1.1.0"
+version = "0.1.3.0"
 group = "com.nohadon"
 
 

@@ -4,12 +4,14 @@ import com.nohadon.NohadonFiles.core.model.GitDirectory
 import com.nohadon.NohadonFiles.core.services.GithubService
 import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
 import com.nohadon.NohadonFiles.web.WebConstants
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.websocket.server.PathParam
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -39,10 +41,10 @@ class GitContentController (
         }
     }
 
-    @GetMapping("/readFile{id}{filePath}")
-    fun getFile(@PathParam("id") id : Long, @PathParam("filePath") filePath : String) : ResponseEntity<String> {
+    @GetMapping("/readFile{id}")
+    fun getFile(@PathParam("id") id : Long, filePath : HttpServletRequest) : ResponseEntity<String> {
         return try {
-            val fileContent : String = githubService.getFile(id, filePath)
+            val fileContent : String = githubService.getFile(id, filePath.getParameter("filePath"))
             ResponseEntity.status(HttpStatus.OK)
                 .header(WebConstants.CORS_HEADER, WebConstants.CORS_HEADER_VALUE)
                 .header("responseType", "text")
