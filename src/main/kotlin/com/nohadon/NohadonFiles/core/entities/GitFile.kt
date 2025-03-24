@@ -1,4 +1,4 @@
-package com.nohadon.NohadonFiles.core.model
+package com.nohadon.NohadonFiles.core.entities
 
 class GitFile (
     val title : String,

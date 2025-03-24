@@ -11,7 +11,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 }
 
-version = "0.1.3.0"
+version = "0.1.13.0"
 group = "com.nohadon"
 
 
@@ -31,6 +31,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+	implementation("com.auth0:java-jwt:4.5.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("org.kohsuke:github-api:1.326")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

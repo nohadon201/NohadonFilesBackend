@@ -1,8 +1,13 @@
 package com.nohadon.NohadonFiles.web.controllers
 
 
-import com.nohadon.NohadonFiles.core.model.DTO.ProjectDTO
-import com.nohadon.NohadonFiles.core.model.Project
+import com.nohadon.NohadonFiles.core.entities.DTO.ProjectDTO
+import com.nohadon.NohadonFiles.core.entities.DTO.SoftwareProjectDTO
+import com.nohadon.NohadonFiles.core.entities.FilterGameProject
+import com.nohadon.NohadonFiles.core.entities.FilterSoftProject
+import com.nohadon.NohadonFiles.core.entities.Project
+import com.nohadon.NohadonFiles.core.entities.SoftwareProject
+import com.nohadon.NohadonFiles.core.entities.types.Repository
 import com.nohadon.NohadonFiles.core.services.ProjectService
 import com.nohadon.NohadonFiles.exceptions.InvalidIdException
 import com.nohadon.NohadonFiles.web.WebConstants
@@ -16,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 
@@ -25,14 +29,14 @@ import org.springframework.web.bind.annotation.RestController
 class ProjectsController constructor(
     private val projectService : ProjectService,
 ) {
-    @PostMapping("/create")
-    fun create(
-        @RequestBody @Validated projectDTO : ProjectDTO
+    @PostMapping("/createSD")
+    fun createSoftwareDevelopment(
+        @RequestBody @Validated projectDTO : SoftwareProjectDTO
     ) : ResponseEntity<String> {
-        val p : Project = Project(
+        val p = SoftwareProject(
             projectDTO.getTitle(),
             projectDTO.getSubtitle(),
-            projectDTO.getLanguages(),
+            projectDTO.getFilters(),
             projectDTO.getInProgress(),
             projectDTO.getIcon(),
             projectDTO.getColor(),
@@ -41,19 +45,43 @@ class ProjectsController constructor(
             projectDTO.getDefaultPath()
         );
         return try {
-            projectService.createProject(p)
+            projectService.createProjectSofwareProject(p)
             ResponseEntity.status(HttpStatus.OK).body("The project was created successfully.")
         } catch (ex : Exception) {
             ResponseEntity.status(HttpStatus.CONFLICT).body(ex.stackTraceToString())
         }
 
     }
+    //@PostMapping("/createGD")
+    //fun createGameDevelopment(
+    //    @RequestBody @Validated projectDTO : ProjectDTO<FilterGameProject>
+    //) : ResponseEntity<String> {
+    //    val p = Project(
+    //        projectDTO.getTitle(),
+    //        projectDTO.getSubtitle(),
+    //        projectDTO.getFilters(),
+    //        Repository.GameDevelopment,
+    //        projectDTO.getInProgress(),
+    //        projectDTO.getIcon(),
+    //        projectDTO.getColor(),
+    //        projectDTO.getGithub(),
+    //        projectDTO.getDescription(),
+    //        projectDTO.getDefaultPath()
+    //    );
+    //    return try {
+    //        projectService.createProjectSofwareProject(p)
+    //        ResponseEntity.status(HttpStatus.OK).body("The project was created successfully.")
+    //    } catch (ex : Exception) {
+    //        ResponseEntity.status(HttpStatus.CONFLICT).body(ex.stackTraceToString())
+    //    }
+//
+    //}
 
-    @GetMapping("/getAll")
-    fun getAll() : ResponseEntity<List<Project>> {
-        val list : MutableList<Project> = mutableListOf()
+    @GetMapping("/getAllSoftwareProjects")
+    fun getAll() : ResponseEntity<List<SoftwareProject>> {
+        val list : MutableList<SoftwareProject> = mutableListOf()
         return try {
-            projectService.getAll(list);
+            projectService.getAllSoftwareProjects(list);
             ResponseEntity.status(HttpStatus.OK)
                 .header(WebConstants.CORS_HEADER, WebConstants.CORS_HEADER_VALUE)
                 .body(list)

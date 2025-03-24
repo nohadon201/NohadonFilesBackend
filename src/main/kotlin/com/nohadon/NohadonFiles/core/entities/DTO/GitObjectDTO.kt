@@ -1,4 +1,4 @@
-package com.nohadon.NohadonFiles.core.model.DTO
+package com.nohadon.NohadonFiles.core.entities.DTO
 
 import org.jetbrains.annotations.NotNull
 import java.io.Serializable
@@ -10,7 +10,7 @@ class GitObjectDTO  constructor(
     private val type : String,
     @NotNull
     private val size : String
-) : Serializable{
+) : Serializable {
     fun getName() = name
     fun getType() = type
     fun getSize() = size
