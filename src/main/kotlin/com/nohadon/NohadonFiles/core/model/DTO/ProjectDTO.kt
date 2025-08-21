@@ -2,7 +2,7 @@ package com.nohadon.NohadonFiles.core.model.DTO
 
 import org.springframework.lang.NonNull
 
-class ProjectDTO (
+class   ProjectDTO (
     @NonNull private val title: String = "",
     @NonNull private val subTitle: String = "",
     @NonNull private val languages: String = "",

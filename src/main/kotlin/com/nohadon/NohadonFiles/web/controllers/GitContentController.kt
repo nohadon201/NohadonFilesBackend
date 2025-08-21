@@ -21,7 +21,7 @@ class GitContentController (
     private val githubService: GithubService
 ) {
 
-    @GetMapping("/get{projectName}")
+    @GetMapping("/get{id}")
     fun getProject(@PathParam("id") id : Long) : ResponseEntity<GitDirectory> {
         return try {
             val projectDirectory : GitDirectory = githubService.getDirectory(id, "/")
