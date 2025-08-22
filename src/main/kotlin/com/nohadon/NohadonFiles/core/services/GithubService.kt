@@ -1,8 +1,8 @@
 package com.nohadon.NohadonFiles.core.services
 
 import com.nohadon.NohadonFiles.core.model.DTO.GitObjectDTO
-import com.nohadon.NohadonFiles.core.model.GitDirectory
-import com.nohadon.NohadonFiles.core.model.GitFile
+import com.nohadon.NohadonFiles.core.model.entities.GitDirectory
+import com.nohadon.NohadonFiles.core.model.entities.GitFile
 import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
 import com.nohadon.NohadonFiles.exceptions.NullBodyResponseException
 import org.slf4j.Logger

@@ -2,10 +2,10 @@ package com.nohadon.NohadonFiles.web.controllers
 
 
 import com.nohadon.NohadonFiles.core.model.DTO.ProjectDTO
-import com.nohadon.NohadonFiles.core.model.Project
+import com.nohadon.NohadonFiles.core.model.entities.Project
 import com.nohadon.NohadonFiles.core.services.ProjectService
 import com.nohadon.NohadonFiles.exceptions.InvalidIdException
-import com.nohadon.NohadonFiles.web.WebConstants
+import com.nohadon.NohadonFiles.web.constants.WebConstants
 import jakarta.websocket.server.PathParam
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 

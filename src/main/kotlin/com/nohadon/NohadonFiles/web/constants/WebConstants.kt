@@ -1,8 +1,4 @@
-package com.nohadon.NohadonFiles.web
-
-import com.nohadon.NohadonFiles.web.controllers.ProjectsController
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+package com.nohadon.NohadonFiles.web.constants
 
 class WebConstants {
     companion object {

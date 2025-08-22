@@ -1,9 +1,9 @@
 package com.nohadon.NohadonFiles.web.controllers
 
-import com.nohadon.NohadonFiles.core.model.GitDirectory
+import com.nohadon.NohadonFiles.core.model.entities.GitDirectory
 import com.nohadon.NohadonFiles.core.services.GithubService
 import com.nohadon.NohadonFiles.exceptions.GitErrorResponseException
-import com.nohadon.NohadonFiles.web.WebConstants
+import com.nohadon.NohadonFiles.web.constants.WebConstants
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.websocket.server.PathParam
 import org.slf4j.Logger
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 

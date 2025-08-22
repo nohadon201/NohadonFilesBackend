@@ -1,6 +1,6 @@
 package com.nohadon.NohadonFiles.core.services
 
-import com.nohadon.NohadonFiles.core.model.Project
+import com.nohadon.NohadonFiles.core.model.entities.Project
 import com.nohadon.NohadonFiles.core.repository.ProjectRepository
 import com.nohadon.NohadonFiles.exceptions.InvalidIdException
 import org.slf4j.Logger
